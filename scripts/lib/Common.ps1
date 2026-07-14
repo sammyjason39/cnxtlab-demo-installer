@@ -60,7 +60,7 @@ function Invoke-LoggedCommand {
 function Start-TerminalCommand {
   param([string]$Title, [string]$Command, [string]$WorkingDirectory)
   $wd = if ($WorkingDirectory) { $WorkingDirectory } else { (Get-Location).Path }
-  Write-Log "Starting $Title in $wd: $Command"
+  Write-Log "Starting $Title in ${wd}: $Command"
   Start-Process powershell.exe -ArgumentList @('-NoExit','-Command', "Set-Location '$wd'; `$host.UI.RawUI.WindowTitle='$Title'; $Command") | Out-Null
 }
 
