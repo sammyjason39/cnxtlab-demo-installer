@@ -49,7 +49,7 @@
     "url": "https://github.com/comfyanonymous/ComfyUI.git",
     "path": "ComfyUI",
     "pythonVersion": "3.12",
-    "launchCommand": "venv/Scripts/python.exe main.py --listen --normalvram",
+    "launchCommand": "venv/Scripts/python.exe main.py --listen",
     "urlToOpen": "http://localhost:8188",
     "readinessUrl": "http://localhost:8188",
     "torchIndexUrl": "https://download.pytorch.org/whl/nightly/cu128"
