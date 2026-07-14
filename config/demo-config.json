@@ -1,5 +1,5 @@
 {
-  "installRoot": "C:/ConextLabDemo",
+  "installRoot": "%USERPROFILE%/Demo",
   "chromePath": "C:/Program Files/Google/Chrome/Application/chrome.exe",
   "ollama": {
     "models": ["gemma4:12b"],
@@ -18,7 +18,7 @@
     {
       "name": "lemorax",
       "url": "https://github.com/ConextLab/lemorax.git",
-      "path": "apps/lemorax",
+      "path": "lemorax",
       "installCommand": "npm install",
       "launchCommand": "npm run dev",
       "urlToOpen": "http://localhost:5173",
@@ -28,7 +28,7 @@
     {
       "name": "unlimited-ai-media-generator",
       "url": "https://github.com/ConextLab/unlimited-ai-media-generator.git",
-      "path": "apps/unlimited-ai-media-generator",
+      "path": "unlimited-ai-media-generator",
       "installCommand": null,
       "launchCommand": null,
       "fileToOpen": "index.html",
@@ -37,7 +37,7 @@
     {
       "name": "aign-venture-compass",
       "url": "https://github.com/ConextLab/aign-venture-compass.git",
-      "path": "apps/aign-venture-compass",
+      "path": "aign-venture-compass",
       "installCommand": "npm install",
       "launchCommand": "npm run dev",
       "urlToOpen": "http://localhost:5174",
@@ -47,7 +47,7 @@
   ],
   "comfyui": {
     "url": "https://github.com/comfyanonymous/ComfyUI.git",
-    "path": "apps/ComfyUI",
+    "path": "ComfyUI",
     "pythonVersion": "3.12",
     "launchCommand": "venv/Scripts/python.exe main.py --listen --normalvram",
     "urlToOpen": "http://localhost:8188",

@@ -4,7 +4,7 @@ PowerShell-first MVP for installing and launching the ConextLab Windows demo sta
 
 ## Files
 
-- `config/demo-config.json` — editable source of truth for install root, repos, ports, models, launch order, readiness checks.
+- `config/demo-config.json` — editable source of truth for install root, repos, ports, models, launch order, readiness checks. Default install root is `%USERPROFILE%/Demo`.
 - `scripts/preflight.ps1` — checks installed/missing/partial components.
 - `scripts/setup.ps1` — installs or repairs dependencies and repos.
 - `scripts/launch.ps1` — starts services in order and opens ready URLs in Chrome.

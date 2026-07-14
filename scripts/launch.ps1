@@ -7,7 +7,7 @@ Write-Log "Launch log: $log"
 foreach ($svc in $config.services) {
   $name = $svc.name
   $cmd = if ($svc.commandFrom -eq 'comfyui.launchCommand') { $config.comfyui.launchCommand } else { $svc.command }
-  $wd = if ($svc.workingDirectoryFrom -eq 'comfyui.path') { Resolve-DemoPath $config $config.comfyui.path } else { $config.installRoot }
+  $wd = if ($svc.workingDirectoryFrom -eq 'comfyui.path') { Resolve-DemoPath $config $config.comfyui.path } else { Get-InstallRoot $config }
   $ready = if ($svc.readinessUrlFrom -eq 'comfyui.readinessUrl') { $config.comfyui.readinessUrl } else { $svc.readinessUrl }
   $open = if ($svc.urlToOpenFrom -eq 'comfyui.urlToOpen') { $config.comfyui.urlToOpen } else { $svc.urlToOpen }
   Start-TerminalCommand $name $cmd $wd

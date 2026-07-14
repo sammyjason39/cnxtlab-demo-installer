@@ -3,7 +3,7 @@ param([string]$ConfigPath = "config/demo-config.json", [switch]$LaunchAfterSetup
 . "$PSScriptRoot/lib/Detection.ps1"
 $log = Initialize-Log 'setup'
 $config = Get-DemoConfig $ConfigPath
-New-Item -ItemType Directory -Force -Path $config.installRoot | Out-Null
+New-Item -ItemType Directory -Force -Path (Get-InstallRoot $config) | Out-Null
 Write-Log "Setup log: $log"
 
 if (!(Test-CommandExists choco)) {

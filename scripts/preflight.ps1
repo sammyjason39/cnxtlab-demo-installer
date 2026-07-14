@@ -4,7 +4,7 @@ param([string]$ConfigPath = "config/demo-config.json")
 $log = Initialize-Log 'preflight'
 $config = Get-DemoConfig $ConfigPath
 Write-Log "Preflight log: $log"
-Write-Log "Install root: $($config.installRoot)"
+Write-Log "Install root: $(Get-InstallRoot $config)"
 $gpu = Get-GpuInfo
 Write-Log "GPU: $($gpu.Detail)"
 Test-ComponentStatus $config | Format-Table -AutoSize

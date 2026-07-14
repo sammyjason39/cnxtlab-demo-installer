@@ -13,10 +13,21 @@ function Get-DemoConfig {
   Get-Content $full -Raw | ConvertFrom-Json
 }
 
+function Expand-DemoPath {
+  param([Parameter(Mandatory)][string]$Path)
+  return [Environment]::ExpandEnvironmentVariables($Path)
+}
+
+function Get-InstallRoot {
+  param([Parameter(Mandatory)]$Config)
+  Expand-DemoPath ([string]$Config.installRoot)
+}
+
 function Resolve-DemoPath {
   param([Parameter(Mandatory)]$Config, [Parameter(Mandatory)][string]$Path)
-  if ([System.IO.Path]::IsPathRooted($Path)) { return $Path }
-  Join-Path $Config.installRoot $Path
+  $expanded = Expand-DemoPath $Path
+  if ([System.IO.Path]::IsPathRooted($expanded)) { return $expanded }
+  Join-Path (Get-InstallRoot $Config) $expanded
 }
 
 function Initialize-Log {
