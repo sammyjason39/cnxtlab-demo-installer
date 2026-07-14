@@ -1,0 +1,88 @@
+{
+  "installRoot": "C:/ConextLabDemo",
+  "chromePath": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+  "ollama": {
+    "models": ["gemma4:12b"],
+    "port": 11434
+  },
+  "tools": {
+    "node": { "minimumVersion": "20.0.0" },
+    "python": { "requiredVersion": "3.12" },
+    "git": {},
+    "gh": {},
+    "ollama": {},
+    "n8n": {},
+    "openclaw": {}
+  },
+  "repositories": [
+    {
+      "name": "lemorax",
+      "url": "https://github.com/ConextLab/lemorax.git",
+      "path": "apps/lemorax",
+      "installCommand": "npm install",
+      "launchCommand": "npm run dev",
+      "urlToOpen": "http://localhost:5173",
+      "readinessUrl": "http://localhost:5173",
+      "autoPull": true
+    },
+    {
+      "name": "unlimited-ai-media-generator",
+      "url": "https://github.com/ConextLab/unlimited-ai-media-generator.git",
+      "path": "apps/unlimited-ai-media-generator",
+      "installCommand": null,
+      "launchCommand": null,
+      "fileToOpen": "index.html",
+      "autoPull": true
+    },
+    {
+      "name": "aign-venture-compass",
+      "url": "https://github.com/ConextLab/aign-venture-compass.git",
+      "path": "apps/aign-venture-compass",
+      "installCommand": "npm install",
+      "launchCommand": "npm run dev",
+      "urlToOpen": "http://localhost:5174",
+      "readinessUrl": "http://localhost:5174",
+      "autoPull": true
+    }
+  ],
+  "comfyui": {
+    "url": "https://github.com/comfyanonymous/ComfyUI.git",
+    "path": "apps/ComfyUI",
+    "pythonVersion": "3.12",
+    "launchCommand": "venv/Scripts/python.exe main.py --listen --normalvram",
+    "urlToOpen": "http://localhost:8188",
+    "readinessUrl": "http://localhost:8188",
+    "torchIndexUrl": "https://download.pytorch.org/whl/nightly/cu128"
+  },
+  "services": [
+    {
+      "name": "Ollama",
+      "command": "ollama serve",
+      "readinessUrl": "http://localhost:11434/api/tags",
+      "urlToOpen": null
+    },
+    {
+      "name": "ComfyUI",
+      "commandFrom": "comfyui.launchCommand",
+      "workingDirectoryFrom": "comfyui.path",
+      "readinessUrlFrom": "comfyui.readinessUrl",
+      "urlToOpenFrom": "comfyui.urlToOpen"
+    },
+    {
+      "name": "n8n",
+      "command": "n8n start",
+      "readinessUrl": "http://localhost:5678",
+      "urlToOpen": "http://localhost:5678"
+    },
+    {
+      "name": "Openclaw Daemon",
+      "command": "openclaw onboard --install-daemon",
+      "readinessUrl": null,
+      "urlToOpen": null
+    }
+  ],
+  "readiness": {
+    "timeoutSeconds": 120,
+    "pollIntervalSeconds": 3
+  }
+}

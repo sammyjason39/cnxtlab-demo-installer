@@ -1,0 +1,24 @@
+# BMAD/local agent runtime
+_bmad/
+_bmad-output/
+.agents/
+
+# Logs
+logs/*.log
+!logs/.gitkeep
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Secrets/env
+.env
+.env.*
+
+# Node/Python artifacts
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
