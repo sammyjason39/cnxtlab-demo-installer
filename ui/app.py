@@ -188,12 +188,22 @@ class InstallerUI:
         self._start_script("preflight.ps1")
 
     def on_setup(self) -> None:
+        self._append_log(
+            "\r\nSetup requires admin rights. A UAC prompt will appear. "
+            "Output goes to the elevated window and the log file (logs/), "
+            "not this panel.\r\n"
+        )
         self._start_script("setup.ps1")
 
     def on_launch(self) -> None:
         self._start_script("launch.ps1")
 
     def on_one_touch(self) -> None:
+        self._append_log(
+            "\r\nOne-Touch requires admin rights. A UAC prompt will appear. "
+            "Output goes to the elevated window and the log file (logs/), "
+            "not this panel.\r\n"
+        )
         self._start_script("one-touch.ps1")
 
     def on_shortcuts(self) -> None:

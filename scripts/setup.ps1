@@ -1,4 +1,14 @@
 param([string]$ConfigPath = "config/demo-config.json", [switch]$LaunchAfterSetup)
+
+# Self-elevate: Chocolatey and global installs require admin.
+if (![bool]([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+  Write-Host 'Requesting elevation (UAC)...'
+  $args = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$PSCommandPath,'-ConfigPath',$ConfigPath)
+  if ($LaunchAfterSetup) { $args += '-LaunchAfterSetup' }
+  Start-Process -FilePath 'powershell.exe' -Verb RunAs -ArgumentList $args -Wait
+  return
+}
+
 . "$PSScriptRoot/lib/Common.ps1"
 . "$PSScriptRoot/lib/Detection.ps1"
 $log = Initialize-Log 'setup'
@@ -11,11 +21,13 @@ if (!(Test-CommandExists choco)) {
   Set-ExecutionPolicy Bypass -Scope Process -Force
   [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
   Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+  # refresh PATH for this session
+  $env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')
 }
 
 foreach ($pkg in @('git','gh','nodejs-lts','python312','ollama')) {
   Write-Log "Ensuring Chocolatey package: $pkg"
-  Invoke-LoggedCommand "choco install $pkg -y --no-progress" -AllowFailure
+  Invoke-LoggedCommand "choco install $pkg -y --no-progress --limit-output --exit-when-reboot-detected" -AllowFailure
 }
 
 Write-Log 'Ensuring global npm tools'
