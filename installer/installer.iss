@@ -1,6 +1,9 @@
 ; ConextLab NVIDIA Demo Installer - Inno Setup script
-; Build with: iscc.exe installer-ui\installer.iss
-; Output: installer-ui\Output\ConextLabDemoInstallerSetup.exe
+; Build order:
+;   1. .\scripts\build-ui.ps1      -> ui\dist\ConextLabDemoInstaller.exe
+;   2. iscc.exe .\installer\installer.iss -> installer\Output\ConextLabDemoInstallerSetup.exe
+;
+; Output: installer\Output\ConextLabDemoInstallerSetup.exe
 
 #define MyAppName "ConextLab NVIDIA Demo Installer"
 #define MyAppVersion "1.0.0"
@@ -32,12 +35,12 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; Flags: unchecked
 
 [Files]
-; Compiled UI EXE (build it first with: dotnet publish -c Release -r win-x64)
-Source: "bin\Release\net8.0-windows\win-x64\publish\ConextLabDemoInstaller.exe"; DestDir: "{app}"; Flags: ignoreversion
+; Compiled UI EXE (build it first with: .\scripts\build-ui.ps1)
+Source: "..\ui\dist\ConextLabDemoInstaller.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; PowerShell scripts
 Source: "..\scripts\*.ps1"; DestDir: "{app}\scripts"; Flags: ignoreversion
 Source: "..\scripts\lib\*.ps1"; DestDir: "{app}\scripts\lib"; Flags: ignoreversion
-; Config
+; Config (preserve user edits on upgrade)
 Source: "..\config\demo-config.json"; DestDir: "{app}\config"; Flags: ignoreversion onlyifdoesntexist
 ; README
 Source: "..\README.md"; DestDir: "{app}"; Flags: ignoreversion

@@ -1,22 +1,34 @@
-# Build script for the ConextLabDemoInstaller UI
-# Run on a Windows machine with .NET 8 SDK installed.
+# Build script: produce a single-file EXE for the ConextLab Demo Installer UI using PyInstaller.
+# Run on a Windows machine with Python 3.12 and PyInstaller installed.
 # Usage: .\scripts\build-ui.ps1
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $root = Split-Path -Parent $PSScriptRoot
-$uiDir = Join-Path $root 'installer-ui'
+$uiDir = Join-Path $root 'ui'
+$appPy = Join-Path $uiDir 'app.py'
 
-if (!(Test-Path $uiDir)) { throw "installer-ui not found at $uiDir" }
+if (!(Test-Path $appPy)) { throw "app.py not found at $appPy" }
 
-Write-Host 'Restoring and publishing ConextLabDemoInstaller (single-file EXE)...'
+# Ensure PyInstaller
+$py = 'py -3.12'
+Write-Host 'Checking PyInstaller...'
+& py -3.12 -m pip show pyinstaller *> $null
+if ($LASTEXITCODE -ne 0) {
+  Write-Host 'Installing PyInstaller...'
+  & py -3.12 -m pip install --upgrade pyinstaller
+}
+
+Write-Host 'Building single-file EXE with PyInstaller...'
 Push-Location $uiDir
 try {
-  dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+  & py -3.12 -m PyInstaller --noconfirm --onefile --windowed --name ConextLabDemoInstaller `
+    --collect-all tkinter `
+    app.py
 } finally { Pop-Location }
 
-$exe = Join-Path $uiDir 'bin\Release\net8.0-windows\win-x64\publish\ConextLabDemoInstaller.exe'
+$exe = Join-Path $uiDir 'dist\ConextLabDemoInstaller.exe'
 if (Test-Path $exe) {
   Write-Host "Build OK. EXE: $exe"
 } else {

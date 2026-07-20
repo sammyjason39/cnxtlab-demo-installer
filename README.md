@@ -10,8 +10,10 @@ PowerShell-first MVP for installing and launching the ConextLab Windows demo sta
 - `scripts/launch.ps1` — starts services in order and opens ready URLs in Chrome.
 - `scripts/one-touch.ps1` — setup then launch.
 - `scripts/create-shortcuts.ps1` — creates Desktop shortcuts.
-- `scripts/build-ui.ps1` — builds the WinForms UI EXE (single-file, self-contained).
-- `installer-ui/` — WinForms UI source (`ConextLabDemoInstaller.csproj`, `MainForm.cs`, `MainForm.Designer.cs`, `Program.cs`) + Inno Setup installer (`installer.iss`) + build/install guide (`README.md`).
+- `scripts/build-ui.ps1` — builds the Tkinter UI EXE via PyInstaller (single-file).
+- `ui/app.py` — Python 3.12 Tkinter UI that wraps the PowerShell scripts (Preflight / Setup / Launch / One-Touch / Shortcuts / Edit Config / git pull / Open Logs).
+- `installer/installer.iss` — Inno Setup script that bundles EXE + scripts + config into one `ConextLabDemoInstallerSetup.exe`.
+- `installer/README.md` — full UI build + install + troubleshooting guide.
 - `logs/` — timestamped run logs.
 
 ## P0 CLI usage
@@ -41,14 +43,20 @@ Create shortcuts:
 
 See [`installer-ui/README.md`](installer-ui/README.md) for full build and install instructions.
 
-Quick build (Windows + .NET 8 SDK):
+Quick build (Windows + Python 3.12):
 
 ```powershell
 .\scripts\build-ui.ps1
-& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" .\installer-ui\installer.iss
+& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" .\installer\installer.iss
 ```
 
-Produces `installer-ui\Output\ConextLabDemoInstallerSetup.exe`.
+Produces `installer\Output\ConextLabDemoInstallerSetup.exe`.
+
+Run the UI directly without building:
+
+```powershell
+py -3.12 .\ui\app.py
+```
 
 ## Notes
 
