@@ -10,9 +10,11 @@ PowerShell-first MVP for installing and launching the ConextLab Windows demo sta
 - `scripts/launch.ps1` — starts services in order and opens ready URLs in Chrome.
 - `scripts/one-touch.ps1` — setup then launch.
 - `scripts/create-shortcuts.ps1` — creates Desktop shortcuts.
+- `scripts/build-ui.ps1` — builds the WinForms UI EXE (single-file, self-contained).
+- `installer-ui/` — WinForms UI source (`ConextLabDemoInstaller.csproj`, `MainForm.cs`, `MainForm.Designer.cs`, `Program.cs`) + Inno Setup installer (`installer.iss`) + build/install guide (`README.md`).
 - `logs/` — timestamped run logs.
 
-## First run on Windows
+## P0 CLI usage
 
 Open PowerShell as Administrator:
 
@@ -35,10 +37,23 @@ Create shortcuts:
 .\scripts\create-shortcuts.ps1
 ```
 
+## UI + installable EXE
+
+See [`installer-ui/README.md`](installer-ui/README.md) for full build and install instructions.
+
+Quick build (Windows + .NET 8 SDK):
+
+```powershell
+.\scripts\build-ui.ps1
+& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" .\installer-ui\installer.iss
+```
+
+Produces `installer-ui\Output\ConextLabDemoInstallerSetup.exe`.
+
 ## Notes
 
 - Default Ollama port is `11434`.
 - Default model is `gemma4:12b`; edit `config/demo-config.json` if the event requires another model.
 - Repo URLs are placeholders under `https://github.com/ConextLab/...`; update if the actual org/user differs.
 - ComfyUI installs PyTorch nightly from the configured CUDA index URL, currently `cu128`.
-- P0 is script-core first. EXE wrapping can be added after the scripts pass on the reference laptop.
+- The UI calls the PowerShell scripts with `-ExecutionPolicy Bypass`; admin is required for Chocolatey/installs.
